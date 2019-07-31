@@ -1,3 +1,6 @@
+import pandas as pd
+
+
 class Recipes:
     recipe_values = ['id', 'calories_kcal', 'protein_grams', 'fat_grams',
                      'carb_grams', 'preparation_time_minutes', 'shelf_life_days',
@@ -7,16 +10,21 @@ class Recipes:
                      'equipment_needed', 'origin_country', 'recipe_cuisine',
                      'in_your_box']
 
-    def __init__(self, recipes):
+    def __init__(self, recipes: pd.DataFrame):
+        """
+        Initialises an instance of class Recipe
+        with recipe dataframe
+        :param recipes: Dataframe
+        """
         self.recipes = recipes
 
-    def filter_recipes_id(self, id):
+    def filter_recipes_id(self, id: int) -> dict:
         a_recipe = self.recipes.loc[id]
         a_recipe = a_recipe.to_dict()
         a_recipe = self.convert_int_type(a_recipe)
         return a_recipe
 
-    def filter_recipes_cuisine(self, cuisine, page, items):
+    def filter_recipes_cuisine(self, cuisine: str, page: int, items: int):
         recipes = self.recipes.loc[self.recipes['recipe_cuisine'] == cuisine,
                                    ['title', 'marketing_description']]
         total = len(recipes.index)

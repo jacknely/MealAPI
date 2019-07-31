@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, url_for, redirect, abort
+from flask import Flask, jsonify, request, abort
 from flask_restful import Resource, Api, reqparse
 from pathlib import Path
 
@@ -11,6 +11,12 @@ api = Api(app)
 
 class Meals(Resource):
     def get(self, id: int):
+        """
+        given a id, this method will return the
+        corresponding recipe
+        :param id: int from url
+        :return: json
+        """
         filename = Path.cwd() / 'recipe-data.csv'
         files = import_file.Files()
         recipe_load = files.import_from_csv(filename)
@@ -21,12 +27,18 @@ class Meals(Resource):
         return jsonify(a_recipe)
 
     def put(self, id: int):
+        """
+        updates a recipe given id and property to update
+        :param id: int from url
+        :return: json
+        """
         parser = reqparse.RequestParser()
         parser.add_argument('origin_country', type=str)
         args = parser.parse_args()
         if args:
+            filename = Path.cwd() / 'recipe-data.csv'
             files = import_file.Files()
-            recipe_load = files.import_from_csv()
+            recipe_load = files.import_from_csv(filename)
             recipes = Recipes(recipe_load)
             a_recipe = recipes.update_recipe(id, args)
             filename = Path.cwd() / 'recipe-data.csv'
@@ -37,11 +49,11 @@ class Meals(Resource):
 
 
 class Cuisine(Resource):
-    def get(self, cuisine):
+    def get(self, cuisine: str):
         """
-        returns
-        :param cuisine:
-        :return:
+        returns a filtered json file of cuisine
+        :param cuisine: GET from url
+        :return: json
         """
         page = request.args.get('page', type=int)
         items = request.args.get('items', type=int)
