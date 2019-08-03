@@ -2,6 +2,7 @@ import pandas as pd
 
 
 class Recipes:
+
     recipe_values = ['id', 'calories_kcal', 'protein_grams', 'fat_grams',
                      'carb_grams', 'preparation_time_minutes', 'shelf_life_days',
                      'gousto_reference' 'title', 'created_at', 'updated_at', 'slug', 'short_title',
@@ -49,6 +50,12 @@ class Recipes:
 
     @staticmethod
     def filter_recipes_to_dict(recipes: pd.DataFrame) -> list:
+        """
+        Creates a dictionary from filtered list
+        of a dataframe
+        :param recipes: dataframe
+        :return: list containing dict
+        """
         cuisine_recipes = []
         for index, row in recipes.iterrows():
             recipe = recipes.loc[index]
@@ -59,11 +66,23 @@ class Recipes:
 
     @staticmethod
     def get_recipes_by_index(recipes: pd.DataFrame, first: int, last: int) -> pd.DataFrame:
+        """
+        Gets a filtered recipe by range
+        :param recipes: Dataframe
+        :param first: first id int
+        :param last: last id int
+        :return:
+        """
         recipes = recipes[first:last]
         return recipes
 
     @staticmethod
     def convert_int_type(recipe_dict: dict) -> dict:
+        """
+        Converts int64 to int for json export
+        :param recipe_dict: dict
+        :return: dict
+        """
         int_headers = ['id', 'calories_kcal', 'protein_grams', 'fat_grams', 'carbs_grams',
                        'preparation_time_minutes', 'shelf_life_days', 'gousto_reference']
         for k, v in recipe_dict.items():
@@ -72,56 +91,17 @@ class Recipes:
         return recipe_dict
 
     def update_recipe(self, id: int, args: dict) -> dict:
+        """
+        Updates a recipe with args by user
+        :param id: int of recipe id to update
+        :param args: headers to update
+        :return: update dict of recipe
+        """
         a_recipe = self.recipes
         for key, value in args.items():
             a_recipe.loc[id, key] = value
         a_recipe = self.filter_recipes_id(id)
         return a_recipe
-
-
-class Metadata:
-
-    def __init__(self):
-        pass
-
-    def get_metadata(self, items: int, pages: int, total: int):
-        metadata = {'page': pages, 'per_page': items,
-                    'total_count': total}
-        links = self.get_link_data(items, pages, total)
-        metadata = [links, metadata]
-        return metadata
-
-    def get_link_data(self, items: int, pages: int, total: int):
-        previous = self.get_previous_page_link(pages)
-        last = round(total / items)
-        next_page = self.get_next_page_link(last, pages)
-        last = str(last)
-        pages = str(pages)
-        items = '&items=' + str(items)
-        current = '/?page=' + pages + items
-        first = '/?page=1' + items
-        previous = '/?page=' + previous + items
-        next_page = '/?page=' + next_page + items
-        last = '/?page=' + last + items
-        links = {'self': current, 'first': first, 'previous': previous,
-                 'next': next_page, 'last': last}
-        return links
-
-    @staticmethod
-    def get_previous_page_link(pages: int):
-        if pages is 1:
-            previous = '1'
-        else:
-            previous = str(pages - 1)
-        return previous
-
-    @staticmethod
-    def get_next_page_link(last: int, pages: int):
-        if last == pages:
-            next_page = str(last)
-        else:
-            next_page = str(pages + 1)
-        return next_page
 
 
 if __name__ == '__main__':
