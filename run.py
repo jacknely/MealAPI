@@ -2,7 +2,8 @@ from flask import Flask, jsonify, request, abort
 from flask_restful import Resource, Api, reqparse
 from pathlib import Path
 
-from app.app import Recipes, Metadata
+from app.recipes import Recipes
+from app.metadata import Metadata
 import app.import_file as import_file
 
 application = app = Flask(__name__)
@@ -10,7 +11,9 @@ api = Api(app)
 
 
 class Meals(Resource):
-    def get(self, id: int):
+
+    @staticmethod
+    def get(id: int):
         """
         given a id, this method will return the
         corresponding recipe
@@ -26,7 +29,8 @@ class Meals(Resource):
 
         return jsonify(a_recipe)
 
-    def put(self, id: int):
+    @staticmethod
+    def put(id: int):
         """
         updates a recipe given id and property to update
         :param id: int from url
@@ -49,7 +53,9 @@ class Meals(Resource):
 
 
 class Cuisine(Resource):
-    def get(self, cuisine: str):
+
+    @staticmethod
+    def get(cuisine: str):
         """
         returns a filtered json file of cuisine
         :param cuisine: GET from url
