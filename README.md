@@ -1,7 +1,7 @@
 # Meal API
 
-Performs a set of recipe operations on an imported recipe file
-Allows you to get recipes by ID, get recipes by cuisine, and update existing recipes
+Performs a set of recipe operations on an imported recipe file and allows user
+to get recipes by ID, get recipes by cuisine, and update an existing recipes
 
 ## Requirements
 
