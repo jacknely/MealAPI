@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 from pandas.util.testing import assert_frame_equal
 
-sys.path.append('../MealAPI')
+sys.path.append('../MealAPI/')  # appends base PATH for running tests from cmd
 
 from app.recipes import Recipes
 from app.metadata import Metadata
@@ -39,6 +39,13 @@ class TestRecipes:
     def test_filter_recipes_id(self):
         a_recipe = self.recipes.filter_recipes_id(1)
         assert a_recipe == a_recipe_id_test
+
+    def test_filter_recipes_cuisine(self):
+        filtered_recipes, total = self.recipes.filter_recipes_cuisine \
+            ('test3', 1, 1)
+        assert filtered_recipes == [{'id': 1, 'marketing_description': 'test1',
+                                     'title': 1}]
+        assert total == 1
 
 
 class TestMetadata:
