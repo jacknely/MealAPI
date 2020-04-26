@@ -1,3 +1,7 @@
+![Python application](https://github.com/jacknely/MealAPI/workflows/Python%20application/badge.svg)
+![Python package](https://github.com/jacknely/MealAPI/workflows/Python%20package/badge.svg)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 # Meal API
 
 Performs a set of recipe operations on an imported recipe file and allows user
@@ -30,7 +34,7 @@ http://127.0.0.1:5000/<id>
 Navigate to recipe-by-cuisine with a specified cuisine.
 Specify page number if desired
 ```
-http://127.0.0.1:5000/cuisine/british/?page=1&items=1
+http://127.0.0.1:5000/cuisine/british?page=1&items=1
 ```
 
 

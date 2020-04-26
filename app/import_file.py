@@ -3,7 +3,6 @@ from pathlib import Path
 
 
 class Files:
-
     @staticmethod
     def import_from_csv(filename: Path) -> pd.DataFrame:
         """
@@ -13,7 +12,7 @@ class Files:
         :return: Dataframe of imported file
         """
         recipes = pd.read_csv(filename, index_col=0)
-        recipes.fillna('', inplace=True)
+        recipes.fillna("", inplace=True)
         return recipes
 
     @staticmethod
@@ -26,7 +25,3 @@ class Files:
         :return: export csv
         """
         file.recipes.to_csv(filename)
-
-
-
-
