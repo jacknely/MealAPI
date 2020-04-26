@@ -3,13 +3,31 @@ import pandas as pd
 
 class Recipes:
 
-    recipe_values = ['id', 'calories_kcal', 'protein_grams', 'fat_grams',
-                     'carb_grams', 'preparation_time_minutes', 'shelf_life_days',
-                     'gousto_reference' 'title', 'created_at', 'updated_at', 'slug', 'short_title',
-                     'marketing_description', 'protein_grams', 'bulletpoint1',
-                     'bulletpoint2', 'bulletpoint3', 'season', 'protein_source',
-                     'equipment_needed', 'origin_country', 'recipe_cuisine',
-                     'in_your_box']
+    recipe_values = [
+        "id",
+        "calories_kcal",
+        "protein_grams",
+        "fat_grams",
+        "carb_grams",
+        "preparation_time_minutes",
+        "shelf_life_days",
+        "gousto_reference" "title",
+        "created_at",
+        "updated_at",
+        "slug",
+        "short_title",
+        "marketing_description",
+        "protein_grams",
+        "bulletpoint1",
+        "bulletpoint2",
+        "bulletpoint3",
+        "season",
+        "protein_source",
+        "equipment_needed",
+        "origin_country",
+        "recipe_cuisine",
+        "in_your_box",
+    ]
 
     def __init__(self, recipes: pd.DataFrame):
         """
@@ -26,11 +44,12 @@ class Recipes:
         :return: dataframe
         """
         a_recipe = self.recipes.loc[id]
-        a_recipe = a_recipe.to_dict()
-        a_recipe = self.convert_int_type(a_recipe)
+        a_recipe = a_recipe.to_json()
         return a_recipe
 
-    def filter_recipes_cuisine(self, cuisine: str, page: int, items: int) -> tuple:
+    def filter_recipes_cuisine(
+        self, cuisine: str, page: int, items: int
+    ) -> tuple:
         """
         filters a DataFrame of recipes by cuisine and
         returns results by user define pagination
@@ -39,13 +58,13 @@ class Recipes:
         :param items: int
         :return: dataframe
         """
-        recipes = self.recipes.loc[self.recipes['recipe_cuisine'] == cuisine,
-                                   ['title', 'marketing_description']]
+        is_cuisine = self.recipes["recipe_cuisine"] == cuisine
+        recipes = self.recipes[is_cuisine]
         total = len(recipes.index)
-        first = (page - 1) * items
-        last = page * items
+        first = (page - 1) * items if page else 1
+        last = page * items if page else 1
         recipes = self.get_recipes_by_index(recipes, first, last)
-        cuisine_recipes = self.filter_recipes_to_dict(recipes)
+        cuisine_recipes = recipes.to_dict("records")
         return cuisine_recipes, total
 
     @staticmethod
@@ -60,12 +79,14 @@ class Recipes:
         for index, row in recipes.iterrows():
             recipe = recipes.loc[index]
             recipe = recipe.to_dict()
-            recipe['id'] = index
+            recipe["id"] = str(index)
             cuisine_recipes.append(recipe)
         return cuisine_recipes
 
     @staticmethod
-    def get_recipes_by_index(recipes: pd.DataFrame, first: int, last: int) -> pd.DataFrame:
+    def get_recipes_by_index(
+        recipes: pd.DataFrame, first: int, last: int
+    ) -> pd.DataFrame:
         """
         Gets a filtered recipe by range
         :param recipes: Dataframe
@@ -75,20 +96,6 @@ class Recipes:
         """
         recipes = recipes[first:last]
         return recipes
-
-    @staticmethod
-    def convert_int_type(recipe_dict: dict) -> dict:
-        """
-        Converts int64 to int for json export
-        :param recipe_dict: dict
-        :return: dict
-        """
-        int_headers = ['id', 'calories_kcal', 'protein_grams', 'fat_grams', 'carbs_grams',
-                       'preparation_time_minutes', 'shelf_life_days', 'gousto_reference']
-        for k, v in recipe_dict.items():
-            if k in int_headers:
-                recipe_dict[k] = int(v)
-        return recipe_dict
 
     def update_recipe(self, id: int, args: dict) -> dict:
         """
@@ -102,7 +109,3 @@ class Recipes:
             a_recipe.loc[id, key] = value
         a_recipe = self.filter_recipes_id(id)
         return a_recipe
-
-
-if __name__ == '__main__':
-    pass

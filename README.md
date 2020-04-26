@@ -1,3 +1,4 @@
+
 # Meal API
 
 Performs a set of recipe operations on an imported recipe file and allows user
@@ -30,7 +31,7 @@ http://127.0.0.1:5000/<id>
 Navigate to recipe-by-cuisine with a specified cuisine.
 Specify page number if desired
 ```
-http://127.0.0.1:5000/cuisine/british/?page=1&items=1
+http://127.0.0.1:5000/cuisine/british?page=1&items=1
 ```
 
 
