@@ -42,6 +42,18 @@ class TestSystem:
             )
             test_recipes.fillna("", inplace=True)
             input.return_value = test_recipes
+            response = client.get("/cuisine/test3")
+
+        assert response.status_code == 200
+        assert b"test3" in response.data
+
+    def test_get_cuisine_with_page(self, client):
+        with patch("app.import_file.Files.import_from_csv") as input:
+            test_recipes = pd.read_csv(
+                Path(__file__).parent / "test_recipe-data.csv", index_col=0
+            )
+            test_recipes.fillna("", inplace=True)
+            input.return_value = test_recipes
             response = client.get("/cuisine/test3?page=1&items=1")
 
         assert response.status_code == 200

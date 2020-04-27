@@ -68,22 +68,6 @@ class Recipes:
         return cuisine_recipes, total
 
     @staticmethod
-    def filter_recipes_to_dict(recipes: pd.DataFrame) -> list:
-        """
-        Creates a dictionary from filtered list
-        of a dataframe
-        :param recipes: dataframe
-        :return: list containing dict
-        """
-        cuisine_recipes = []
-        for index, row in recipes.iterrows():
-            recipe = recipes.loc[index]
-            recipe = recipe.to_dict()
-            recipe["id"] = str(index)
-            cuisine_recipes.append(recipe)
-        return cuisine_recipes
-
-    @staticmethod
     def get_recipes_by_index(
         recipes: pd.DataFrame, first: int, last: int
     ) -> pd.DataFrame:
